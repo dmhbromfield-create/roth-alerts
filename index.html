@@ -65,7 +65,7 @@
 <div class="header">
   <div>
     <h1>📊 ROTH IRA — DAILY ALERT CHECK</h1>
-    <div style="font-size:12px;color:#555;margin-top:2px;">David · Scheduled checks: 10:00 AM &amp; 3:00 PM ET · Updated May 8, 2026 — Holdings + DCA confirmed ✅ | GOOG 2.9% from trim | SGOV buy confirmed May 11 ✅</div>
+    <div style="font-size:12px;color:#555;margin-top:2px;">David · Scheduled checks: 10:00 AM &amp; 3:00 PM ET · Updated May 14, 2026 01:39 PM — auto-updated from Yahoo CSV</div>
   </div>
   <div class="clock">
     <div class="time" id="clock">--:--:--</div>
@@ -124,7 +124,7 @@
   </table>
 
   <div class="alert-rules">
-    <div class="section-title" style="margin-top:0">Alert Reference Levels — Updated May 8, 2026</div>
+    <div class="section-title" style="margin-top:0">Alert Reference Levels — Updated May 14, 2026 01:39 PM — auto-updated from Yahoo CSV</div>
     <div class="rules-grid">
       <div class="rule-card">
         <div class="rule-ticker">AVGO</div>
@@ -172,12 +172,13 @@
 
 <script>
 const POSITIONS = [
-  { ticker:'AVGO', name:'Broadcom',   avgCost:324.91, sell:454.29, reentry:389, dca:297, trimShares:0.051, shares:4.403 },
-  { ticker:'GOOG', name:'Alphabet',   avgCost:270.57, sell:408.72, reentry:340, dca:268, trimShares:0.043, shares:3.1772 },
-  { ticker:'MSFT', name:'Microsoft',  avgCost:472.15, sell:492.19, reentry:null,dca:368, trimShares:0.038, shares:2.4545 },
-  { ticker:'NVDA', name:'NVIDIA',     avgCost:125.82, sell:9999,   reentry:174, dca:158, trimShares:0.153, shares:12.3475, trimDone:true, trimDate:'May 8 @ $216.01'},
-  { ticker:'TSM',  name:'Taiwan Semi',avgCost:169.85, sell:9999,   reentry:330, dca:315, trimShares:0.054, shares:4.069, trimDone:true, trimDate:'May 6 @ $416.78' },
+  { ticker:'AVGO', name:'Broadcom',   avgCost:329.9, sell:454.29,   reentry:389, dca:297, trimShares:0.33, shares:4.403 },
+  { ticker:'GOOG', name:'Alphabet',   avgCost:275.92, sell:408.72,   reentry:340, dca:268, trimShares:0.159, shares:3.1772 },
+  { ticker:'MSFT', name:'Microsoft',   avgCost:478.66, sell:492.19,   reentry:null, dca:368, trimShares:0.092, shares:2.4545 },
+  { ticker:'NVDA', name:'NVIDIA',   avgCost:128.49, sell:9999,   reentry:174, dca:158, trimShares:1.08, shares:12.3475, trimDone:true, trimDate:'May 8 @ $216.01'},
+  { ticker:'TSM', name:'Taiwan Semi',   avgCost:175.25, sell:9999,   reentry:330, dca:315, trimShares:0.254, shares:4.069, trimDone:true, trimDate:'May 6 @ $416.78'},
 ];
+;
 
 const FINNHUB_KEY = 'd7t0h89r01qugn08sun0d7t0h89r01qugn08sung';
 
