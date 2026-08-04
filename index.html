@@ -65,7 +65,7 @@
 <div class="header">
   <div>
     <h1>📊 ROTH IRA — DAILY ALERT CHECK</h1>
-    <div style="font-size:12px;color:#555;margin-top:2px;">David · Scheduled checks: 10:00 AM &amp; 3:00 PM ET · Updated August 04, 2026 11:48 AM — auto-updated from Yahoo CSV</div>
+    <div style="font-size:12px;color:#555;margin-top:2px;">David · Scheduled checks: 10:00 AM &amp; 3:00 PM ET · Updated August 04, 2026 12:04 PM — auto-updated from Yahoo CSV</div>
   </div>
   <div class="clock">
     <div class="time" id="clock">--:--:--</div>
@@ -124,7 +124,7 @@
   </table>
 
   <div class="alert-rules">
-    <div class="section-title" style="margin-top:0">Alert Reference Levels — Updated August 04, 2026 11:48 AM — auto-updated from Yahoo CSV</div>
+    <div class="section-title" style="margin-top:0">Alert Reference Levels — Updated August 04, 2026 12:04 PM — auto-updated from Yahoo CSV</div>
     <div class="rules-grid">
       <div class="rule-card">
         <div class="rule-ticker">AVGO ✅</div>
@@ -147,7 +147,7 @@
         <div class="rule-ticker">MSFT ✅</div>
         <div class="rule-line"><span>✅ Sold</span><span class="rule-val">$496.70</span></div>
         <div class="rule-line"><span>📅 Date</span><span class="rule-val">2026-08-04</span></div>
-        <div class="rule-line"><span>🔵 Re-Entry</span><span class="rule-val">$None ⚠️ WATCH</span></div>
+        <div class="rule-line"><span>🔵 Re-Entry</span><span class="rule-val">$420 ⚠️ WATCH</span></div>
         <div class="rule-line"><span>✅ 10% DCA</span><span class="rule-val">$367.46 — 2026-06-22 ($36)</span></div>
         <div class="rule-line"><span>🟢 2nd 10% floor</span><span class="rule-val">$317</span></div>
         <div class="rule-line"><span>Shares left</span><span class="rule-val">2.7015</span></div>
@@ -156,7 +156,7 @@
         <div class="rule-ticker">NVDA ✅</div>
         <div class="rule-line"><span>✅ Sold</span><span class="rule-val">$216.01</span></div>
         <div class="rule-line"><span>📅 Date</span><span class="rule-val">2026-05-08</span></div>
-        <div class="rule-line"><span>🔵 Re-Entry</span><span class="rule-val">$174 ⚠️ WATCH</span></div>
+        <div class="rule-line"><span>🔵 Re-Entry</span><span class="rule-val">$184 ⚠️ WATCH</span></div>
         <div class="rule-line"><span>🟢 10% DCA floor</span><span class="rule-val">$158</span></div>
         <div class="rule-line"><span>Shares left</span><span class="rule-val">13.3268</span></div>
       </div>
@@ -164,12 +164,12 @@
         <div class="rule-ticker">TSM ✅</div>
         <div class="rule-line"><span>✅ Sold</span><span class="rule-val">$416.78</span></div>
         <div class="rule-line"><span>📅 Date</span><span class="rule-val">2026-05-06</span></div>
-        <div class="rule-line"><span>🔵 Re-Entry</span><span class="rule-val">$330 ⚠️ WATCH</span></div>
+        <div class="rule-line"><span>🔵 Re-Entry</span><span class="rule-val">$354 ⚠️ WATCH</span></div>
         <div class="rule-line"><span>🟢 10% DCA floor</span><span class="rule-val">$315</span></div>
         <div class="rule-line"><span>Shares left</span><span class="rule-val">4.3864</span></div>
       </div>
     </div>
-    <div style="margin-top:10px;font-size:11px;color:#555;">Trim proceeds → park in SGOV immediately. Re-entry from SGOV when retrace levels hit. SGOV total: 6.506 sh ($655.28 @ $100.72). Earmarked: $283 (TSM@$330) + $217.48 (NVDA@$174) = $500.48. Unearmarked buffer: ~$154.80. Updated August 04, 2026 11:48 AM — auto-updated from Yahoo CSV</div>
+    <div style="margin-top:10px;font-size:11px;color:#555;">Trim proceeds → park in SGOV immediately. Re-entry from SGOV when retrace levels hit. SGOV total: 6.506 sh ($655.28 @ $100.72). Earmarked: $283 (TSM@$354) + $217.48 (NVDA@$184) + $46.19 pending (MSFT@$420, settles Aug 5) = $546.67. Unearmarked buffer: ~$154.80. Updated August 04, 2026 12:04 PM — auto-updated from Yahoo CSV</div>
   </div>
 
   <div class="last-updated" id="last-updated"></div>
@@ -179,9 +179,9 @@
 const POSITIONS = [
   { ticker:'AVGO', name:'Broadcom',   avgCost:344.23, sell:9999,   reentry:null, dca:297, trimShares:0.361, shares:4.8076, trimDone:true, trimDate:'2026-06-01 @ $454.49', nextTrim:568, nextTrimShares:0.334},
   { ticker:'GOOG', name:'Alphabet',   avgCost:282.75, sell:408.72,   reentry:340, dca:268, trimShares:0.173, shares:3.4637 },
-  { ticker:'MSFT', name:'Microsoft',   avgCost:466.48, sell:9999,   reentry:null, dca:368, trimShares:0.101, shares:2.7015, trimDone:true, trimDate:'2026-08-04 @ $496.70', nextTrim:615, nextTrimShares:0.093, dcaDone10pct:true, dcaDate:'2026-06-22 @ $367.46 ($36)', dca2:317},
-  { ticker:'NVDA', name:'NVIDIA',   avgCost:134.14, sell:9999,   reentry:174, dca:158, trimShares:1.166, shares:13.3268, trimDone:true, trimDate:'2026-05-08 @ $216.01', nextTrim:260, nextTrimShares:1.094},
-  { ticker:'TSM', name:'Taiwan Semi',   avgCost:193.37, sell:9999,   reentry:330, dca:315, trimShares:0.274, shares:4.3864, trimDone:true, trimDate:'2026-05-06 @ $416.78', nextTrim:540, nextTrimShares:0.258},
+  { ticker:'MSFT', name:'Microsoft',   avgCost:466.48, sell:9999,   reentry:420, dca:368, trimShares:0.101, shares:2.7015, trimDone:true, trimDate:'2026-08-04 @ $496.70', nextTrim:615, nextTrimShares:0.093, dcaDone10pct:true, dcaDate:'2026-06-22 @ $367.46 ($36)', dca2:317},
+  { ticker:'NVDA', name:'NVIDIA',   avgCost:134.14, sell:9999,   reentry:184, dca:158, trimShares:1.166, shares:13.3268, trimDone:true, trimDate:'2026-05-08 @ $216.01', nextTrim:260, nextTrimShares:1.094},
+  { ticker:'TSM', name:'Taiwan Semi',   avgCost:193.37, sell:9999,   reentry:354, dca:315, trimShares:0.274, shares:4.3864, trimDone:true, trimDate:'2026-05-06 @ $416.78', nextTrim:540, nextTrimShares:0.258},
 ];
 ;
 
