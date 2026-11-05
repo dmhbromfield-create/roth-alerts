@@ -74,7 +74,7 @@
 <div class="header">
   <div>
     <h1>📊 ROTH IRA — DAILY ALERT CHECK</h1>
-    <div style="font-size:12px;color:#555;margin-top:2px;">David · Auto-checks every 15 min while the market is open, plus 4:05 PM ET · Updated November 05, 2026 02:11 PM — auto-updated from Yahoo CSV</div>
+    <div style="font-size:12px;color:#555;margin-top:2px;">David · Auto-checks every 15 min while the market is open, plus 4:05 PM ET · Updated November 05, 2026 03:12 PM — auto-updated from Yahoo CSV</div>
   </div>
   <div class="clock">
     <div class="time" id="clock">--:--:--</div>
@@ -137,7 +137,7 @@
   </table>
 
   <div class="alert-rules">
-    <div class="section-title" style="margin-top:0">Alert Reference Levels — Updated November 05, 2026 02:11 PM — auto-updated from Yahoo CSV</div>
+    <div class="section-title" style="margin-top:0">Alert Reference Levels — Updated November 05, 2026 03:12 PM — auto-updated from Yahoo CSV</div>
     <div class="rules-grid">
       <div class="rule-card">
         <div class="rule-ticker">AVGO ✅</div>
@@ -151,7 +151,7 @@
       <div class="rule-card">
         <div class="rule-ticker">GOOG</div>
         <div class="rule-line"><span>🔴 Sell</span><span class="rule-val">$408.72</span></div>
-        <div class="rule-line"><span>🔵 Re-Entry</span><span class="rule-val">below cost</span></div>
+        <div class="rule-line"><span>🔵 Re-Entry</span><span class="rule-val">none — no trim yet</span></div>
         <div class="rule-line"><span>🟢 10% DCA floor</span><span class="rule-val">$268</span></div>
         <div class="rule-line"><span>Trim shares</span><span class="rule-val">0.566</span></div>
         <div class="rule-line"><span>Shares held</span><span class="rule-val">11.3233</span></div>
@@ -189,7 +189,7 @@
         <div class="rule-line"><span>Shares left</span><span class="rule-val">11.6065</span></div>
       </div>
     </div>
-    <div id="sgov-line" style="margin-top:10px;font-size:11px;color:#555;">Trim proceeds → park in SGOV immediately. Re-entry from SGOV when retrace levels hit. SGOV (master ledger): 16.8208 sh ($1,689.65 @ $100.45). Reserve: $1,500.00 (funds 10%-drop DCA doublings/triples and future re-entry earmarks — Fable v2). Re-entry earmarks in SGOV: $46.19 (MSFT@$420) = $46.19. Unearmarked buffer: ~$143.46. Re-entry money sold to cash, buy pending: $283.00 (TSM@$354) + $217.48 (NVDA@$184) = $500.48. IRA cash $73.76 (Yahoo CSV 2026-11-04). Robinhood cross-check skipped: newest Yahoo CSV is 2026-11-04, older than the last ledger trade (2026-11-05) — run the bookmarklet to re-check. Updated November 05, 2026 02:11 PM — auto-updated from Yahoo CSV</div>
+    <div id="sgov-line" style="margin-top:10px;font-size:11px;color:#555;">Trim proceeds → park in SGOV immediately. Re-entry from SGOV when retrace levels hit. SGOV (master ledger): 16.8208 sh ($1,689.65 @ $100.45). Reserve: $1,500.00 (funds 10%-drop DCA doublings/triples and future re-entry earmarks — Fable v2). Re-entry earmarks in SGOV: $46.19 (MSFT@$420) = $46.19. Unearmarked buffer: ~$143.46. Re-entry money sold to cash, buy pending: $283.00 (TSM@$354) + $217.48 (NVDA@$184) = $500.48. IRA cash $73.76 (Yahoo CSV 2026-11-04). Robinhood cross-check skipped: newest Yahoo CSV is 2026-11-04, older than the last ledger trade (2026-11-05) — run the bookmarklet to re-check. Updated November 05, 2026 03:12 PM — auto-updated from Yahoo CSV</div>
   </div>
 
   <div class="last-updated" id="last-updated"></div>
@@ -205,7 +205,7 @@ const POSITIONS = [
 ];
 ;
 
-const DROP = {"asOf":"2026-11-04","dcaDoubled":{"AVGO":44,"GOOG":34,"MSFT":32,"NVDA":66,"TSM":44},"tier3":{"depth":0.2,"amount":330,"AVGO":{"hi":427.76,"hiDate":"2026-08-07","armed":true},"GOOG":{"hi":355.84,"hiDate":"2026-08-10","armed":true},"MSFT":{"hi":555.8,"hiDate":"2026-11-04","armed":true},"NVDA":{"hi":239.24,"hiDate":"2026-10-06","armed":true},"TSM":{"hi":485.8,"hiDate":"2026-10-05","armed":true}}};
+const DROP = {"asOf":"2026-11-04","dcaDoubled":{"AVGO":44,"GOOG":34,"MSFT":32,"NVDA":66,"TSM":44},"targets":{"NVDA":0.3,"AVGO":0.2,"TSM":0.2,"GOOG":0.15,"MSFT":0.15},"tier3":{"depth":0.2,"amount":330,"AVGO":{"hi":427.76,"hiDate":"2026-08-07","armed":true},"GOOG":{"hi":355.84,"hiDate":"2026-08-10","armed":true},"MSFT":{"hi":555.8,"hiDate":"2026-11-04","armed":true},"NVDA":{"hi":239.24,"hiDate":"2026-10-06","armed":true},"TSM":{"hi":485.8,"hiDate":"2026-10-05","armed":true}}};
 
 const FINNHUB_KEY = 'd7t0h89r01qugn08sun0d7t0h89r01qugn08sung';
 
@@ -231,8 +231,22 @@ function activeFloor(pos) {
 }
 const DCA_DOUBLED = (DROP && DROP.dcaDoubled) || {AVGO:44, GOOG:34, MSFT:32, NVDA:66, TSM:44};
 
+// Weight cap (strategy doc §1): a Tier 3 or re-entry buy stops at target + 5 pt of the
+// five-stock book. capInfo = {w, cap, room} from live prices and the ledger share counts.
+const TARGETS = (DROP && DROP.targets) || {NVDA:0.30, AVGO:0.20, TSM:0.20, GOOG:0.15, MSFT:0.15};
+function capInfoFor(results) {
+  const v = {}; let total = 0;
+  for (const {pos, data} of results) { if (!data) return {}; v[pos.ticker] = pos.shares * data.price; total += v[pos.ticker]; }
+  const out = {};
+  for (const t in v) {
+    const cap = (TARGETS[t] || 0) + 0.05;
+    out[t] = {w: v[t] / total, cap, room: Math.max(0, (cap * total - v[t]) / (1 - cap))};
+  }
+  return out;
+}
+
 // Returns [{level:'fire'|'near'|'info', key, head, act}] for one stock at a live price.
-function dropAlerts(pos, price) {
+function dropAlerts(pos, price, ci) {
   const t = pos.ticker, out = [], fl = activeFloor(pos);
   const dbl = DCA_DOUBLED[t];
   if (fl && price < fl.price) {
@@ -253,11 +267,18 @@ function dropAlerts(pos, price) {
   if (t3) {
     const hi = Math.max(t3.hi, price), line = hi * (1 - DROP.tier3.depth);
     const off = (1 - price / hi) * 100;
-    if (t3.armed && price <= line) {
+    const c = (ci || {})[t];
+    const amt = c ? Math.min(DROP.tier3.amount, c.room) : DROP.tier3.amount;
+    const capTxt = c ? ` ${t} is ${(c.w*100).toFixed(1)}% of the stock book; its cap is ${(c.cap*100).toFixed(0)}%` : '';
+    if (t3.armed && price <= line && c && amt < 25) {
+      out.push({level:'info', key:'t3c:'+t, head:`ℹ️ ${t} is past its Tier 3 line (${off.toFixed(1)}% below its 63-day high), but the weight cap blocks the buy`,
+        act:`${capTxt}, leaving only ${fmt(c.room)} of room — too small to buy. Skip.`});
+    } else if (t3.armed && price <= line) {
       out.push({level:'fire', key:'t3:'+t+':'+DROP.asOf, head:`🟠 ${t} Tier 3 deep drop — ${off.toFixed(1)}% below its 63-day high close ${fmt(hi)}`,
-        act:`One-time $${DROP.tier3.amount} into ${t} alone, only if the fundamentals test passes. Confirm on the CLOSE (≤ ${fmt(line)}). ` +
-            `Funding: sell SGOV the next trading day, buy ${t} the day after (never same-day). Check post-buy weight ≤ target + 5 pt. ` +
-            `Independent of Tier 1 and the biweekly DCA. Log as BUY (Tier 3 Deep Drop).`});
+        act:`One-time ${fmt(amt)} into ${t}` + (amt < DROP.tier3.amount - 0.5 ? ` (the $${DROP.tier3.amount} Tier 3 amount, cut to fit the weight cap:${capTxt})` : '') +
+            `, only if the fundamentals test passes. Confirm on the CLOSE (≤ ${fmt(line)}); the amount is recomputed at the close. ` +
+            `Funding: sell SGOV the next trading day, buy ${t} the day after (never same-day). ` +
+            `Independent of Tier 1 and the biweekly DCA. Log as BUY (Tier 3 Deep Drop).`, amt});
     } else if (t3.armed && price <= line * 1.05) {
       out.push({level:'near', key:'t3n:'+t, head:`🟡 ${t} near Tier 3 — ${off.toFixed(1)}% below its 63-day high (fires at a close ≤ ${fmt(line)})`,
         act:`No action yet. Tier 3 = one-time $${DROP.tier3.amount} if it closes 20%+ below the 63-day high.`});
@@ -356,6 +377,7 @@ async function runCheck() {
   document.getElementById('last-run').textContent = 'Fetching...';
 
   const results = await Promise.all(POSITIONS.map(async pos => ({ pos, data: await fetchPrice(pos.ticker) })));
+  const capInfo = capInfoFor(results);
 
   let fireCnt=0, watchCnt=0, reentryCnt=0, dcaCnt=0, html='';
   const dropItems = [], dropTickers = new Set();
@@ -363,7 +385,7 @@ async function runCheck() {
   for (const {pos, data} of results) {
     if (!data) { html += `<tr><td class="ticker">${pos.ticker}</td><td colspan="7" class="gray">Price unavailable</td></tr>`; continue; }
     const price = data.price;
-    const drops = dropAlerts(pos, price);
+    const drops = dropAlerts(pos, price, capInfo);
     drops.forEach(d => { dropItems.push(d); if (d.level === 'fire') dropTickers.add(pos.ticker); });
     const dropFire = drops.find(d => d.level === 'fire');
     const chgPct = (!data.isClose && data.prev) ? (price-data.prev)/data.prev*100 : (data.prev&&data.prev!==price) ? (price-data.prev)/data.prev*100 : null;
@@ -379,7 +401,7 @@ async function runCheck() {
     const triggerColor = !pos.trimDone ? (gapToTrigger<3?'red':gapToTrigger<8?'orange':'gray') : 'green';
     const barColor = pos.trimDone?'#4caf84':gapToTrigger<3?'#e05c5c':gapToTrigger<8?'#e2b96f':'#4caf84';
     const priceLabel = data.isClose ? '<span style="font-size:11px;color:#888">closing price</span>' : `<span class="${chgColor}" style="font-size:12px">${pct(chgPct)} today</span>`;
-    const reentryInfo = dropFire ? `<b class="green">${dropFire.key.startsWith('t3') ? `Tier 3: one-time $${DROP.tier3.amount} (fundamentals test)` : `Double next DCA → $${DCA_DOUBLED[pos.ticker]}`}</b> — confirm on close` :
+    const reentryInfo = dropFire ? `<b class="green">${dropFire.key.startsWith('t3') ? `Tier 3: one-time ${fmt(dropFire.amt)} (fundamentals test, weight cap)` : `Double next DCA → $${DCA_DOUBLED[pos.ticker]}`}</b> — confirm on close` :
       pos.trimDone && pos.reentry && price <= pos.reentry ? `Re-entry $${pos.reentry} hit — sell SGOV earmark, buy next day` :
       !pos.trimDone && pos.reentry && price <= pos.reentry && !st.label.includes('SELL') && !st.label.includes('NEAR') ? `Watch level $${pos.reentry} — no earmark, discretionary` :
       pos.trimDone ?
