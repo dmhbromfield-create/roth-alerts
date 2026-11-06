@@ -74,7 +74,7 @@
 <div class="header">
   <div>
     <h1>📊 ROTH IRA — DAILY ALERT CHECK</h1>
-    <div style="font-size:12px;color:#555;margin-top:2px;">David · Auto-checks every 15 min while the market is open, plus 4:05 PM ET · Updated November 06, 2026 02:32 PM — auto-updated from Yahoo CSV</div>
+    <div style="font-size:12px;color:#555;margin-top:2px;">David · Auto-checks every 15 min while the market is open, plus 4:05 PM ET · Updated November 06, 2026 02:47 PM — auto-updated from Yahoo CSV</div>
   </div>
   <div class="clock">
     <div class="time" id="clock">--:--:--</div>
@@ -137,7 +137,7 @@
   </table>
 
   <div class="alert-rules">
-    <div class="section-title" style="margin-top:0">Alert Reference Levels — Updated November 06, 2026 02:32 PM — auto-updated from Yahoo CSV</div>
+    <div class="section-title" style="margin-top:0">Alert Reference Levels — Updated November 06, 2026 02:47 PM — auto-updated from Yahoo CSV</div>
     <div class="rules-grid">
       <div class="rule-card">
         <div class="rule-ticker">AVGO ✅</div>
@@ -188,7 +188,7 @@
         <div class="rule-line"><span>Shares held</span><span class="rule-val">12.426608</span></div>
       </div>
     </div>
-    <div id="sgov-line" style="margin-top:10px;font-size:11px;color:#555;">Trim proceeds → park in SGOV immediately. Re-entry from SGOV when retrace levels hit. SGOV (master ledger): 9.65552 sh ($970.19 @ $100.48). Reserve: $924.09 (funds 10%-drop DCA doublings/triples and future re-entry earmarks — Fable v2). Re-entry earmarks in SGOV: $46.19 (MSFT@$420) = $46.19. Unearmarked buffer: ~$-0.09. IRA cash $780.01 (Yahoo CSV 2026-11-06). Updated November 06, 2026 02:32 PM — auto-updated from Yahoo CSV</div>
+    <div id="sgov-line" style="margin-top:10px;font-size:11px;color:#555;">Trim proceeds → park in SGOV immediately. Re-entry from SGOV when retrace levels hit. SGOV (master ledger): 9.65552 sh ($970.19 @ $100.48). Reserve: $924.09 (funds 10%-drop DCA doublings/triples and future re-entry earmarks — Fable v2). Re-entry earmarks in SGOV: $46.19 (MSFT@$420) = $46.19. Unearmarked buffer: ~$-0.09. IRA cash $780.01 (Yahoo CSV 2026-11-06). Updated November 06, 2026 02:47 PM — auto-updated from Yahoo CSV</div>
   </div>
 
   <div class="last-updated" id="last-updated"></div>
@@ -284,7 +284,7 @@ function dropAlerts(pos, price, ci) {
     } else if (!t3.armed && t3.fired && !t3.bought) {
       out.push({level:'fire', key:'t3p:'+t+':'+t3.fired, head:`🟠 ${t} Tier 3 fired at the ${t3.fired} close — buy pending`,
         act:`Place the Tier 3 buy once Claude posts the final amount (from the ledger, before the open; the weight cap can make it $0). It does not fire again for this drop; ` +
-            `only an executed Tier 3 buy uses it up (Fable, Nov 5).`});
+            `only an executed Tier 3 buy uses it up (Fable, Nov 5).`, amt, pending:true});
     } else if (!t3.armed && price <= line) {
       out.push({level:'info', key:'t3x:'+t, head:`ℹ️ ${t} ${off.toFixed(1)}% below its 63-day high, but Tier 3 is already used for this drop` + (t3.bought ? ` (bought ${t3.bought})` : ''),
         act:`Tier 3 re-arms after a close back within 5% of the 63-day high (≈ ${fmt(hi*0.95)}).`});
@@ -404,7 +404,7 @@ async function runCheck() {
     const triggerColor = !pos.trimDone ? (gapToTrigger<3?'red':gapToTrigger<8?'orange':'gray') : 'green';
     const barColor = pos.trimDone?'#4caf84':gapToTrigger<3?'#e05c5c':gapToTrigger<8?'#e2b96f':'#4caf84';
     const priceLabel = data.isClose ? '<span style="font-size:11px;color:#888">closing price</span>' : `<span class="${chgColor}" style="font-size:12px">${pct(chgPct)} today</span>`;
-    const reentryInfo = dropFire ? `<b class="green">${dropFire.key.startsWith('t3') ? `Tier 3: one-time ${fmt(dropFire.amt)} (fundamentals test, weight cap)` : `Double next DCA → $${DCA_DOUBLED[pos.ticker]}`}</b> — confirm on close` :
+    const reentryInfo = dropFire ? `<b class="green">${dropFire.key.startsWith('t3') ? (dropFire.pending ? `Tier 3 buy pending — Claude posts the amount before the open` : `Tier 3: one-time ${fmt(dropFire.amt)} (fundamentals test, weight cap)`) : `Double next DCA → $${DCA_DOUBLED[pos.ticker]}`}</b>` + (dropFire.pending ? '' : ` — confirm on close`) :
       pos.trimDone && pos.reentry && price <= pos.reentry ? `Re-entry $${pos.reentry} hit — sell SGOV earmark, buy next day` :
       !pos.trimDone && pos.reentry && price <= pos.reentry && !st.label.includes('SELL') && !st.label.includes('NEAR') ? `Watch level $${pos.reentry} — no earmark, discretionary` :
       pos.trimDone ?
