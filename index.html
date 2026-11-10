@@ -281,6 +281,9 @@ function dropAlerts(pos, price, ci) {
     } else if (t3.armed && price <= line * 1.05) {
       out.push({level:'near', key:'t3n:'+t, head:`🟡 ${t} near Tier 3 — ${off.toFixed(1)}% below its 63-day high (fires at a close ≤ ${fmt(line)})`,
         act:`No action yet. Tier 3 = one-time $${DROP.tier3.amount} if it closes 20%+ below the 63-day high.`});
+    } else if (!t3.armed && t3.fired && !t3.bought && c && amt < 25) {
+      out.push({level:'info', key:'t3pc:'+t+':'+t3.fired, head:`ℹ️ ${t} Tier 3 still open (fired at the ${t3.fired} close) — no buy now: over its weight cap`,
+        act:`${capTxt.trim()}, so the buy is $0. Nothing to do. It stays open; if room under the cap reopens, Claude sizes the buy (Fable, Nov 5).`});
     } else if (!t3.armed && t3.fired && !t3.bought) {
       out.push({level:'fire', key:'t3p:'+t+':'+t3.fired, head:`🟠 ${t} Tier 3 fired at the ${t3.fired} close — buy pending`,
         act:`Place the Tier 3 buy once Claude posts the final amount (from the ledger, before the open; the weight cap can make it $0). It does not fire again for this drop; ` +
